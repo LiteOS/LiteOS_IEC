@@ -1,17 +1,17 @@
-#ifndef __ATINY_CONFIG_H__
-#define __ATINY_CONFIG_H__
+#ifndef __IEC_CONFIG_H__
+#define __IEC_CONFIG_H__
 
 #include <stddef.h>
 
-#define ATINY_EVENTS_HANDLE_PERIOD_MS (1*1000)
-#define ATINY_RECONN_MAX_TIMES        (5)
+#define IEC_EVENTS_HANDLE_PERIOD_MS (1*1000)
+#define IEC_RECONN_MAX_TIMES        (5)
 
-#define ATINY_SEND_BUF_SIZE      (1024)
-#define ATINY_RECV_BUF_SIZE      (1024)
+#define IEC_SEND_BUF_SIZE      (1024)
+#define IEC_RECV_BUF_SIZE      (1024)
 
 #define SERVER_IP "122.112.225.88" //"118.190.136.167";//;//"127.0.0.1";
 
-#define ATINY_MQTT_BUILTIN_NUM (5)
+#define IEC_MQTT_BUILTIN_NUM (5)
 
 
 #if 0

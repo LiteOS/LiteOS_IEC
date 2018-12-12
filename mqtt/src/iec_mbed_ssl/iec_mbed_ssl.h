@@ -1,5 +1,5 @@
-#ifndef __ATINY_MBED_SSL_H__
-#define __ATINY_MBED_SSL_H__
+#ifndef __IEC_MBED_SSL_H__
+#define __IEC_MBED_SSL_H__
 
 #include "mbedtls/net_sockets.h"
 #include "mbedtls/ssl.h"
@@ -10,11 +10,11 @@
 #include "mbedtls/timing.h"
 #include "mbedtls/error.h"
 
-#include "atiny.h"
+#include "iec.h"
 
 
 
-typedef struct atiny_ssl_ctx
+typedef struct iec_ssl_ctx
 {
     mbedtls_ssl_context *ssl;
     mbedtls_ssl_config *conf;
@@ -24,14 +24,14 @@ typedef struct atiny_ssl_ctx
     mbedtls_x509_crt *clicert;
     mbedtls_pk_context *pkey;
     mbedtls_timing_delay_context *timer;
-} atiny_ssl_ctx_t;
+} iec_ssl_ctx_t;
 
-int atiny_ssl_send( void *ctx, const unsigned char *buf, size_t len);
-int atiny_ssl_recv( void *ctx, unsigned char *buf, size_t len);
+int iec_ssl_send( void *ctx, const unsigned char *buf, size_t len);
+int iec_ssl_recv( void *ctx, unsigned char *buf, size_t len);
 
-int atiny_ssl_init(atiny_connection_t *nc, atiny_ssl_param_u *ssl_param);
-int atiny_ssl_handshake(atiny_connection_t *nc);
-void atiny_ssl_destroy(atiny_connection_t *nc);
+int iec_ssl_init(iec_connection_t *nc, iec_ssl_param_u *ssl_param);
+int iec_ssl_handshake(iec_connection_t *nc);
+void iec_ssl_destroy(iec_connection_t *nc);
 
 
 #endif

@@ -32,18 +32,36 @@
  * applicable export control laws and regulations.
  *---------------------------------------------------------------------------*/
 
-#include "atiny_adapter.h"
-#include "entropy.h"
+#include "iec_log.h"
 
-int mbedtls_hardware_poll(void *data,
-                          unsigned char *output, size_t len, size_t *olen);
-int mbedtls_hardware_poll(void *data,
-                          unsigned char *output, size_t len, size_t *olen)
+static iec_log_e g_iec_log_level = LOG_DEBUG;
+
+static const char *g_log_names[] =
 {
-    ((void)data);
-    *olen = 0;
-    if (0 != atiny_random(output, len))
-        return MBEDTLS_ERR_ENTROPY_SOURCE_FAILED;
-    *olen = len;
-    return 0;
+    "DEBUG",
+    "INFO",
+    "WARNING",
+    "ERR",
+    "FATAL",
+};
+
+void iec_set_log_level(iec_log_e level)
+{
+    g_iec_log_level = level;
 }
+
+iec_log_e iec_get_log_level(void)
+{
+    return g_iec_log_level;
+}
+
+const char *iec_get_log_level_name(iec_log_e log_level)
+{
+    if (log_level >= LOG_MAX)
+    {
+        return "UNKOWN";
+    }
+
+    return g_log_names[log_level];
+}
+

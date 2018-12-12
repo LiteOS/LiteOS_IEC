@@ -1,14 +1,14 @@
-#ifndef __ATINY_DEBUG_H__
-#define __ATINY_DEBUG_H__
+#ifndef __IEC_DEBUG_H__
+#define __IEC_DEBUG_H__
 
 #include <assert.h>
 
-#define ATINY_ASSERT_MSG_PARAM_NULL  "null param"
-#define ATINY_ASSERT_MSG_MALLOC_ERR  "malloc error"
+#define IEC_ASSERT_MSG_PARAM_NULL  "null param"
+#define IEC_ASSERT_MSG_MALLOC_ERR  "malloc error"
 
 #ifdef DEBUG
-#define ATINY_ASSERT(exp, msg)                                         \
-	if(!exp)                                                           \
+#define IEC_ASSERT(exp, msg)                                         \
+    if(!exp)                                                           \
     {                                                                  \
         do                                                             \
         {                                                              \
@@ -17,7 +17,7 @@
     assert(exp);                                                       \
     }
 #else
-#define ATINY_ASSERT(exp, msg)
+#define IEC_ASSERT(exp, msg)
 #endif
 
 #endif

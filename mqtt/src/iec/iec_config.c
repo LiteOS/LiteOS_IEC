@@ -1,4 +1,4 @@
-#include "atiny_config.h"
+#include "iec_config.h"
 
 #ifdef WITH_DTLS
 const char server_name[] = SERVER_NAME;

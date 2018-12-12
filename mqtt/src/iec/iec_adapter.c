@@ -32,7 +32,7 @@
  * applicable export control laws and regulations.
  *---------------------------------------------------------------------------*/
 
-#include "atiny_adapter.h"
+#include "iec_adapter.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -43,7 +43,7 @@
 
 
 
-#define ATINY_CNT_MAX_WAITTIME 0xFFFFFFFF
+#define IEC_CNT_MAX_WAITTIME 0xFFFFFFFF
 #define LOG_BUF_SIZE (1024)
 
 #if 0
@@ -67,7 +67,7 @@ static uint64_t osKernelGetTickCount (void)
 }
 #endif
 
-atiny_time_t atiny_gettime_ms(void)
+iec_time_t iec_gettime_ms(void)
 {
 
     struct timeval tv;
@@ -76,17 +76,17 @@ atiny_time_t atiny_gettime_ms(void)
     return tv.tv_sec*1000 + tv.tv_usec/1000;
 }
 
-void *atiny_malloc(size_t size)
+void *iec_malloc(size_t size)
 {
     return malloc(size);
 }
 
-void atiny_free(void *ptr)
+void iec_free(void *ptr)
 {
     (void)free(ptr);
 }
 
-int atiny_snprintf(char *buf, size_t size, const char *format, ...)
+int iec_snprintf(char *buf, size_t size, const char *format, ...)
 {
     int     ret;
     va_list args;
@@ -99,7 +99,7 @@ int atiny_snprintf(char *buf, size_t size, const char *format, ...)
 }
 
 
-int atiny_printf(const char *format, ...)
+int iec_printf(const char *format, ...)
 {
     int ret;
     char str_buf[LOG_BUF_SIZE] = {0};
@@ -116,12 +116,12 @@ int atiny_printf(const char *format, ...)
 }
 
 
-char *atiny_strdup(const char *ch)
+char *iec_strdup(const char *ch)
 {
     return strdup(ch);
 }
 
-char *atiny_strndup(const char *ch, size_t n)
+char *iec_strndup(const char *ch, size_t n)
 {
     return strndup(ch,n);
 }
@@ -129,7 +129,7 @@ char *atiny_strndup(const char *ch, size_t n)
 
 #ifdef WITH_LINUX
 
-void *atiny_mutex_create(void)
+void *iec_mutex_create(void)
 {
     pthread_mutex_t *mutex = NULL;
     mutex = malloc(sizeof(pthread_mutex_t));
@@ -142,7 +142,7 @@ void *atiny_mutex_create(void)
     return (void *)mutex;
 }
 
-void atiny_mutex_destroy(void *mutex)
+void iec_mutex_destroy(void *mutex)
 {
     if(mutex == NULL)
         return;
@@ -151,7 +151,7 @@ void atiny_mutex_destroy(void *mutex)
     return;
 }
 
-void atiny_mutex_lock(void *mutex)
+void iec_mutex_lock(void *mutex)
 {
     if (mutex == NULL)
     {
@@ -161,7 +161,7 @@ void atiny_mutex_lock(void *mutex)
     (void)pthread_mutex_lock(mutex);
 }
 
-void atiny_mutex_unlock(void *mutex)
+void iec_mutex_unlock(void *mutex)
 {
     if (mutex == NULL)
     {
@@ -173,22 +173,22 @@ void atiny_mutex_unlock(void *mutex)
 
 #else
 
-void *atiny_mutex_create(void)
+void *iec_mutex_create(void)
 {
     return NULL;
 }
 
-void atiny_mutex_destroy(void *mutex)
+void iec_mutex_destroy(void *mutex)
 {
     ((void)mutex);
 }
 
-void atiny_mutex_lock(void *mutex)
+void iec_mutex_lock(void *mutex)
 {
     ((void)mutex);
 }
 
-void atiny_mutex_unlock(void *mutex)
+void iec_mutex_unlock(void *mutex)
 {
     ((void)mutex);
 }
@@ -196,7 +196,7 @@ void atiny_mutex_unlock(void *mutex)
 #endif /* LOSCFG_BASE_IPC_SEM == YES */
 
 
-int atiny_random(void* output, size_t len)
+int iec_random(void* output, size_t len)
 {
     size_t i;
     unsigned char * p = (unsigned char *) output;
@@ -207,7 +207,7 @@ int atiny_random(void* output, size_t len)
     return 0;
 }
 
-void atiny_reboot(void)
+void iec_reboot(void)
 {
 
 }

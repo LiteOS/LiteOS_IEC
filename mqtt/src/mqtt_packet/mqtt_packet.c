@@ -1,6 +1,6 @@
 #include <string.h>
 
-#include "atiny_log.h"
+#include "iec_log.h"
 #include "mqtt_packet.h"
 
 static int mqtt_encode_len(unsigned char *buf, int len)
@@ -125,7 +125,7 @@ int mqtt_encode_connect(unsigned char *buf, int buf_len, mqtt_connect_opt_t *opt
     unsigned char *vhead_buf;
     unsigned char *payload_buf;
 
-    //ATINY_ASSERT(options->connect_payload.client_id, "client id is null");
+    //IEC_ASSERT(options->connect_payload.client_id, "client id is null");
     // add connect variable header size
     remaining_len += sizeof(mqtt_connect_head_t);
 
@@ -219,7 +219,7 @@ int mqtt_decode_publish(unsigned char *buf, int buf_len, mqtt_publish_opt_t *opt
     len = mqtt_decode_fixhead(buf, &type, &options->dup, &options->qos, &options->retain, &remaning_len);
     if(type != MQTT_PACKET_TYPE_PUBLISH)
     {
-        ATINY_LOG(LOG_ERR, "decode pulish error");
+        IEC_LOG(LOG_ERR, "decode pulish error");
         return -1;
     }
 
@@ -280,7 +280,7 @@ int mqtt_decode_suback(unsigned char *buf, int buf_len, mqtt_suback_opt_t *optio
     len = mqtt_decode_fixhead(buf, &type, &reserved, &reserved, &reserved, &remaning_len);
     if(type != MQTT_PACKET_TYPE_SUBACK)
     {
-        ATINY_LOG(LOG_ERR, "decode suback error");
+        IEC_LOG(LOG_ERR, "decode suback error");
         return -1;
     }
 

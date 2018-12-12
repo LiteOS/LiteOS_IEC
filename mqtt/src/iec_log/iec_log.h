@@ -32,10 +32,10 @@
  * applicable export control laws and regulations.
  *---------------------------------------------------------------------------*/
 
-#ifndef ATINY_LOG_H
-#define ATINY_LOG_H
+#ifndef __IEC_LOG_H__
+#define __IEC_LOG_H__
 #include <stdio.h>
-#include "atiny_adapter.h"
+#include "iec_adapter.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,7 +51,7 @@ typedef enum
     LOG_FATAL,
 
     LOG_MAX
-} atiny_log_e;
+} iec_log_e;
 
 /**
  *@ingroup agenttiny
@@ -66,40 +66,40 @@ typedef enum
  *
  *@retval none.
  *@par Dependency: none.
- *@see atiny_get_log_level.
+ *@see iec_get_log_level.
  */
-void atiny_set_log_level(atiny_log_e level);
+void iec_set_log_level(iec_log_e level);
 
 /**
  *@ingroup agenttiny
  *@brief get log level.
  *
  *@par Description:
- *This API is used to get log level set by atiny_set_log_level.
+ *This API is used to get log level set by iec_set_log_level.
  *@attention none.
  *
  *@param none.
  *
- *@retval #atiny_log_e  Log level.
+ *@retval #iec_log_e  Log level.
  *@par Dependency: none.
- *@see atiny_set_log_level.
+ *@see iec_set_log_level.
  */
-atiny_log_e atiny_get_log_level(void);
+iec_log_e iec_get_log_level(void);
 
-#ifdef ATINY_DEBUG
-const char* atiny_get_log_level_name(atiny_log_e log_level);
+#ifdef IEC_DEBUG
+const char* iec_get_log_level_name(iec_log_e log_level);
 
-#define ATINY_LOG(level, fmt, ...) \
+#define IEC_LOG(level, fmt, ...) \
     do \
     { \
-        if ((level) >= atiny_get_log_level()) \
+        if ((level) >= iec_get_log_level()) \
         { \
             (void)printf("[%s][%u][%s:%d] " fmt "\r\n", \
-            atiny_get_log_level_name((level)), (unsigned int)atiny_gettime_ms(), __FUNCTION__, __LINE__, ##__VA_ARGS__); \
+            iec_get_log_level_name((level)), (unsigned int)iec_gettime_ms(), __FUNCTION__, __LINE__, ##__VA_ARGS__); \
         } \
     } while (0)
 #else
-#define ATINY_LOG(level, fmt, ...)
+#define IEC_LOG(level, fmt, ...)
 #endif
 
 #ifdef __cplusplus

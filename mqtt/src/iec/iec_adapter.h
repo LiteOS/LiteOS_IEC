@@ -32,12 +32,12 @@
  * applicable export control laws and regulations.
  *---------------------------------------------------------------------------*/
 
-/**@defgroup atiny_adapter Agenttiny Adapter
+/**@defgroup iec_adapter Agenttiny Adapter
  * @ingroup agent
  */
 
-#ifndef _ATINY_ADAPTER_H_
-#define _ATINY_ADAPTER_H_
+#ifndef __IEC_ADAPTER_H__
+#define __IEC_ADAPTER_H__
 
 #if defined(__cplusplus)
 extern "C" {
@@ -46,10 +46,10 @@ extern "C" {
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include "atiny.h"
+#include "iec.h"
 
 /**
- *@ingroup atiny_adapter
+ *@ingroup iec_adapter
  *@brief get time since the system was boot.
  *
  *@par Description:
@@ -60,12 +60,12 @@ extern "C" {
  *
  *@retval #uint64_t     the number of milliseconds.
  *@par Dependency: none.
- *@see atiny_usleep
+ *@see iec_usleep
  */
-atiny_time_t atiny_gettime_ms(void);
+iec_time_t iec_gettime_ms(void);
 
 /**
- *@ingroup atiny_adapter
+ *@ingroup iec_adapter
  *@brief sleep thread itself.
  *
  *@par Description:
@@ -76,12 +76,12 @@ atiny_time_t atiny_gettime_ms(void);
  *
  *@retval none.
  *@par Dependency: none.
- *@see atiny_gettime_ms
+ *@see iec_gettime_ms
  */
-void atiny_usleep(unsigned long usec);
+void iec_usleep(unsigned long usec);
 
 /**
- *@ingroup atiny_adapter
+ *@ingroup iec_adapter
  *@brief get len bytes of entropy.
  *
  *@par Description:
@@ -96,10 +96,10 @@ void atiny_usleep(unsigned long usec);
  *@par Dependency: none.
  *@see none.
  */
-int atiny_random(void* output, size_t len);
+int iec_random(void* output, size_t len);
 
 /**
- *@ingroup atiny_adapter
+ *@ingroup iec_adapter
  *@brief allocates a block of size bytes of memory
  *
  *@par Description:
@@ -110,28 +110,28 @@ int atiny_random(void* output, size_t len);
  *
  *@retval #pointer      pointer to the beginning of the block.
  *@par Dependency: none.
- *@see atiny_free
+ *@see iec_free
  */
-void* atiny_malloc(size_t size);
+void* iec_malloc(size_t size);
 
 /**
- *@ingroup atiny_adapter
+ *@ingroup iec_adapter
  *@brief deallocate memory block.
  *
  *@par Description:
  *This API is used to deallocate memory block.
  *@attention none.
  *
- *@param size           [IN] pointer to the beginning of the block previously allocated with atiny_malloc.
+ *@param size           [IN] pointer to the beginning of the block previously allocated with iec_malloc.
  *
  *@retval none.
  *@par Dependency: none.
- *@see atiny_malloc
+ *@see iec_malloc
  */
-void atiny_free(void* ptr);
+void iec_free(void* ptr);
 
 /**
- *@ingroup atiny_adapter
+ *@ingroup iec_adapter
  *@brief writes formatted data to string.
  *
  *@par Description:
@@ -149,10 +149,10 @@ void atiny_free(void* ptr);
  *@par Dependency: none.
  *@see none.
  */
-int atiny_snprintf(char* buf, size_t size, const char* format, ...);
+int iec_snprintf(char* buf, size_t size, const char* format, ...);
 
 /**
- *@ingroup atiny_adapter
+ *@ingroup iec_adapter
  *@brief writes formatted data to stream.
  *
  *@par Description:
@@ -168,15 +168,15 @@ int atiny_snprintf(char* buf, size_t size, const char* format, ...);
  *@par Dependency: none.
  *@see none.
  */
-int atiny_printf(const char* format, ...);
+int iec_printf(const char* format, ...);
 
 /**
- *@ingroup atiny_strdup
+ *@ingroup iec_strdup
  *@brief returns a pointer to a new string which is a duplicate of the string ch
  *
  *@par Description:
  *This API returns a pointer to a new string which is a duplicate of the string ch. 
-   Memory for the new string is obtained with atiny_malloc, and can be freed with atiny_free
+   Memory for the new string is obtained with iec_malloc, and can be freed with iec_free
  *@attention none.
  *
  *@param format         [IN] const char pointer
@@ -184,12 +184,12 @@ int atiny_printf(const char* format, ...);
  *
  *@retval #char pointer          a pointer to a new string which is a duplicate of the string ch
  *@par Dependency: none.
- *@see atiny_malloc atiny_free.
+ *@see iec_malloc iec_free.
  */
-char *atiny_strdup(const char *ch);
+char *iec_strdup(const char *ch);
 
 /**
- *@ingroup atiny_adapter
+ *@ingroup iec_adapter
  *@brief create a mutex.
  *
  *@par Description:
@@ -201,12 +201,12 @@ char *atiny_strdup(const char *ch);
  *@retval #pointer      the mutex handle.
  *@retval NULL          create mutex failed.
  *@par Dependency: none.
- *@see atiny_mutex_destroy | atiny_mutex_lock | atiny_mutex_unlock
+ *@see iec_mutex_destroy | iec_mutex_lock | iec_mutex_unlock
  */
-void* atiny_mutex_create(void);
+void* iec_mutex_create(void);
 
 /**
- *@ingroup atiny_adapter
+ *@ingroup iec_adapter
  *@brief destroy the specified mutex object.
  *
  *@par Description:
@@ -217,12 +217,12 @@ void* atiny_mutex_create(void);
  *
  *@retval none.
  *@par Dependency: none.
- *@see atiny_mutex_create | atiny_mutex_lock | atiny_mutex_unlock
+ *@see iec_mutex_create | iec_mutex_lock | iec_mutex_unlock
  */
-void atiny_mutex_destroy(void* mutex);
+void iec_mutex_destroy(void* mutex);
 
 /**
- *@ingroup atiny_adapter
+ *@ingroup iec_adapter
  *@brief waits until the specified mutex is in the signaled state.
  *
  *@par Description:
@@ -233,12 +233,12 @@ void atiny_mutex_destroy(void* mutex);
  *
  *@retval none.
  *@par Dependency: none.
- *@see atiny_mutex_create | atiny_mutex_destroy | atiny_mutex_unlock
+ *@see iec_mutex_create | iec_mutex_destroy | iec_mutex_unlock
  */
-void atiny_mutex_lock(void* mutex);
+void iec_mutex_lock(void* mutex);
 
 /**
- *@ingroup atiny_adapter
+ *@ingroup iec_adapter
  *@brief releases ownership of the specified mutex object.
  *
  *@par Description:
@@ -249,12 +249,12 @@ void atiny_mutex_lock(void* mutex);
  *
  *@retval none.
  *@par Dependency: none.
- *@see atiny_mutex_create | atiny_mutex_destroy | atiny_mutex_lock
+ *@see iec_mutex_create | iec_mutex_destroy | iec_mutex_lock
  */
-void atiny_mutex_unlock(void* mutex);
+void iec_mutex_unlock(void* mutex);
 
 /**
- *@ingroup atiny_adapter
+ *@ingroup iec_adapter
  *@brief reboot.
  *
  *@par Description:
@@ -265,7 +265,7 @@ void atiny_mutex_unlock(void* mutex);
  *@par Dependency: none.
  *@see none.
  */
-void atiny_reboot(void);
+void iec_reboot(void);
 
 
 #if defined(__cplusplus)

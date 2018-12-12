@@ -5,7 +5,7 @@
 ######################################
 # target
 ######################################
-TARGET = Atiny
+TARGET = IEC
 ######################################
 # building variables
 ######################################
@@ -59,7 +59,7 @@ AS_DEFS =
 
 # C defines
 C_DEFS :=  \
-        -D ATINY_DEBUG
+        -D IEC_DEBUG
 
 
 ifeq ($(WITH_DTLS), yes)
@@ -67,7 +67,7 @@ C_DEFS +=  \
         -D DEBUG \
         -D USE_MBED_TLS \
         -D WITH_DTLS  \
-        -D MBEDTLS_CONFIG_FILE=\"atiny_mbedtls_config_x509.h\" \
+        -D MBEDTLS_CONFIG_FILE=\"iec_mbedtls_config_x509.h\" \
         -D LWIP_TIMEVAL_PRIVATE=0
 
         #-D MBEDTLS_DEBUG_C \
@@ -81,26 +81,26 @@ MBEDTLS_SRC = \
         C_SOURCES += $(MBEDTLS_SRC)
 
 MBEDTLS_PORT_SRC = \
-        ${wildcard $(SRC)/atiny_mbed_ssl/*.c}
+        ${wildcard $(SRC)/iec_mbed_ssl/*.c}
         C_SOURCES += $(MBEDTLS_PORT_SRC)
 endif
 
 
-ATINY_LOG_SRC = \
-        ${wildcard $(SRC)/atiny_log/atiny_log.c}
-        C_SOURCES += $(ATINY_LOG_SRC)
+IEC_LOG_SRC = \
+        ${wildcard $(SRC)/iec_log/iec_log.c}
+        C_SOURCES += $(IEC_LOG_SRC)
 
 MQTT_PACKET_SRC = \
         ${wildcard $(SRC)/mqtt_packet/*.c}
         C_SOURCES += $(MQTT_PACKET_SRC)
 
 MQTT_SRC = \
-        ${wildcard $(SRC)/atiny_mqtt/*.c}
+        ${wildcard $(SRC)/iec_mqtt/*.c}
         C_SOURCES += $(MQTT_SRC)
 
-ATINY_TINY_SRC = \
-        ${wildcard $(SRC)/atiny/*.c}
-        C_SOURCES += $(ATINY_TINY_SRC)
+IEC_SRC = \
+        ${wildcard $(SRC)/iec/*.c}
+        C_SOURCES += $(IEC_SRC)
 
 #AGENT_DEMO_SRC = \
 #        ${wildcard $(TOP_DIR)/agent_tiny/examples/mqtt_demo/*.c}
@@ -145,7 +145,7 @@ MBEDTLS_INC = \
         C_INCLUDES += $(MBEDTLS_INC)
 
 MBEDTLS_PORT_INC = \
-        -I $(SRC)/atiny_mbed_ssl
+        -I $(SRC)/iec_mbed_ssl
         C_INCLUDES += $(MBEDTLS_PORT_INC)
 endif
 
@@ -155,20 +155,20 @@ MQTT_PACKET_INC = \
 
 
 MQTT_INC = \
-        -I $(SRC)/atiny_mqtt
+        -I $(SRC)/iec_mqtt
         C_INCLUDES += $(MQTT_INC)
 
-ATINY_LOG_INC = \
-        -I $(SRC)/atiny_log
-        C_INCLUDES += $(ATINY_LOG_INC)
+IEC_LOG_INC = \
+        -I $(SRC)/iec_log
+        C_INCLUDES += $(IEC_LOG_INC)
 
-ATINY_INC = \
-        -I $(SRC)/atiny
-        C_INCLUDES += $(ATINY_INC)
+IEC_INC = \
+        -I $(SRC)/iec
+        C_INCLUDES += $(IEC_INC)
 
-ATINY_DBG_INC = \
+IEC_DBG_INC = \
         -I $(INC)
-        C_INCLUDES += $(ATINY_DBG_INC)
+        C_INCLUDES += $(IEC_DBG_INC)
 
 # compile gcc flags
 ASFLAGS = $(MCU) $(AS_DEFS) $(AS_INCLUDES) $(OPT) -Wall -fdata-sections -ffunction-sections
