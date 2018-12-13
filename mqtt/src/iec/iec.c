@@ -1,7 +1,7 @@
 #include <string.h>
 
 #include "iec.h"
-#include "iec_debug.h"
+#include "iec_log.h"
 #include "iec_adapter.h"
 #include "iec_config.h"
 #include "iec_sock.h"

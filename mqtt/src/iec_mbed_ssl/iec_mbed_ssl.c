@@ -169,7 +169,7 @@ exit:
     {
         mbedtls_free(ssl_ctx->cacert);
     }
-	
+
     if(ssl_ctx->clicert)
     {
         mbedtls_free(ssl_ctx->clicert);
@@ -226,7 +226,7 @@ int iec_ssl_handshake(iec_connection_t *nc)
     while( ( ret = mbedtls_ssl_handshake( ssl_ctx->ssl ) ) != 0 )
     {
         if( ret != MBEDTLS_ERR_SSL_WANT_READ && ret != MBEDTLS_ERR_SSL_WANT_WRITE
-			 && ret != MBEDTLS_ERR_SSL_TIMEOUT)
+            && ret != MBEDTLS_ERR_SSL_TIMEOUT)
         {
             IEC_LOG(LOG_ERR, " failed\n	! mbedtls_ssl_handshake returned -0x%x", -ret );
             goto exit;

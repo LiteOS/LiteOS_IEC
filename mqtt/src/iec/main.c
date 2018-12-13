@@ -49,27 +49,27 @@ void dev_message_handle_cb(void *msg)
 static iec_mqtt_builtin_topic_t ief_builtin_topic[IEC_MQTT_BUILTIN_NUM] = 
 {
     {
-        .topic = AGENT_TINY_PROJECT_ID"/device/"AGENT_TINY_DEVICE_ID"/properties/result",
+        .topic = IEC_PROJECT_ID"/device/"IEC_DEVICE_ID"/properties/result",
         .qos = QOS0,
         .cb = dev_message_cb,
     },
     {
-        .topic = AGENT_TINY_PROJECT_ID"/device/"AGENT_TINY_DEVICE_ID"/twins/result",
+        .topic = IEC_PROJECT_ID"/device/"IEC_DEVICE_ID"/twins/result",
         .qos = QOS0,
         .cb = twins_message_cb,
     },
     {
-        .topic = AGENT_TINY_PROJECT_ID"/device/"AGENT_TINY_DEVICE_ID"/properties/todevice",
+        .topic = IEC_PROJECT_ID"/device/"IEC_DEVICE_ID"/properties/todevice",
         .qos = QOS0,
         .cb = dev_message_update_cb,
     },
     {
-        .topic = AGENT_TINY_PROJECT_ID"/device/"AGENT_TINY_DEVICE_ID"/twins/expected",
+        .topic = IEC_PROJECT_ID"/device/"IEC_DEVICE_ID"/twins/expected",
         .qos = QOS0,
         .cb = twins_message_update_cb,
     },
     {
-        .topic = AGENT_TINY_PROJECT_ID"/device/"AGENT_TINY_DEVICE_ID"/messages/todevice/#",
+        .topic = IEC_PROJECT_ID"/device/"IEC_DEVICE_ID"/messages/todevice/#",
         .qos = QOS0,
         .cb = dev_message_handle_cb,
     },
@@ -119,21 +119,21 @@ void ev_handler(iec_connection_t *nc, int event, void *event_data)
                 iec_mqtt_subscribe(nc, &sub_options, cbs);
 
                 mqtt_publish_opt_t options;
-                options.publish_head.topic = AGENT_TINY_PROJECT_ID"/device/"AGENT_TINY_DEVICE_ID"/properties";
+                options.publish_head.topic = IEC_PROJECT_ID"/device/"IEC_DEVICE_ID"/properties";
                 options.publish_payload.msg = "hello";
                 options.dup = 0;
                 options.qos = 1;
                 options.retain = 0;
                 iec_mqtt_publish(nc, &options);
 
-                options.publish_head.topic = AGENT_TINY_PROJECT_ID"/device/"AGENT_TINY_DEVICE_ID"/properties/tocloud";
+                options.publish_head.topic = IEC_PROJECT_ID"/device/"IEC_DEVICE_ID"/properties/tocloud";
                 options.publish_payload.msg = "hello1";
                 options.dup = 0;
                 options.qos = 1;
                 options.retain = 0;
                 iec_mqtt_publish(nc, &options);
 
-                options.publish_head.topic = AGENT_TINY_PROJECT_ID"/device/"AGENT_TINY_DEVICE_ID"/twins";
+                options.publish_head.topic = IEC_PROJECT_ID"/device/"IEC_DEVICE_ID"/twins";
                 options.publish_payload.msg = "hello2";
                 options.dup = 0;
                 options.qos = 1;
@@ -143,7 +143,7 @@ void ev_handler(iec_connection_t *nc, int event, void *event_data)
                 mqtt_unsubscribe_opt_t unsub_options;
                 unsub_options.unsubscribe_payload.count = 1;
                 unsub_options.unsubscribe_payload.topic = (char **)malloc(1);
-                unsub_options.unsubscribe_payload.topic[0] = AGENT_TINY_PROJECT_ID"/device/"AGENT_TINY_DEVICE_ID"/properties/result";
+                unsub_options.unsubscribe_payload.topic[0] = IEC_PROJECT_ID"/device/"IEC_DEVICE_ID"/properties/result";
                 iec_mqtt_unsubscribe(nc, &unsub_options);
             }
             break;

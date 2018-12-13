@@ -24,8 +24,8 @@
 #endif
 extern const char server_name[];
 
-#define AGENT_TINY_PROJECT_ID "cb1d33433e2648b0a0f40ad1a0c5ffbb"
-#define AGENT_TINY_DEVICE_ID "894d48f8-45c0-4ac4-8d18-f5b983ef9159"
+#define IEC_PROJECT_ID "cb1d33433e2648b0a0f40ad1a0c5ffbb"
+#define IEC_DEVICE_ID "894d48f8-45c0-4ac4-8d18-f5b983ef9159"
 
 
 #ifndef MQTT_TEST_CA_CRT
@@ -117,8 +117,8 @@ extern const size_t mqtt_test_cli_key_len;
 #ifndef SERVER_PORT
 #define SERVER_PORT (1883)
 #endif
-#define AGENT_TINY_PROJECT_ID "cb1d33433e2648b0a0f40ad1a0c5ffbb"
-#define AGENT_TINY_DEVICE_ID "894d48f8-45c0-4ac4-8d18-f5b983ef9159"
+#define IEC_PROJECT_ID "cb1d33433e2648b0a0f40ad1a0c5ffbb"
+#define IEC_DEVICE_ID "894d48f8-45c0-4ac4-8d18-f5b983ef9159"
 
 #endif
 #endif
@@ -127,8 +127,8 @@ extern const size_t mqtt_test_cli_key_len;
 #if 1
 #ifdef WITH_DTLS
 
-#define AGENT_TINY_PROJECT_ID "cb1d33433e2648b0a0f40ad1a0c5ffbb"
-#define AGENT_TINY_DEVICE_ID "894d48f8-45c0-4ac4-8d18-f5b983ef9159"
+#define IEC_PROJECT_ID "cb1d33433e2648b0a0f40ad1a0c5ffbb"
+#define IEC_DEVICE_ID "894d48f8-45c0-4ac4-8d18-f5b983ef9159"
 
 
 #ifndef SERVER_PORT
@@ -267,16 +267,13 @@ extern const size_t mqtt_test_cli_key_len;
 #define SERVER_PORT (1883)
 #endif
 
-#define AGENT_TINY_PROJECT_ID "cb1d33433e2648b0a0f40ad1a0c5ffbb"
-#define AGENT_TINY_DEVICE_ID "894d48f8-45c0-4ac4-8d18-f5b983ef9159"
+#define IEC_PROJECT_ID "cb1d33433e2648b0a0f40ad1a0c5ffbb"
+#define IEC_DEVICE_ID "894d48f8-45c0-4ac4-8d18-f5b983ef9159"
 
 #endif
 
 
 #endif
-
-
-
 
 
 

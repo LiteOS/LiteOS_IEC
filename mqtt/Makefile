@@ -102,18 +102,6 @@ IEC_SRC = \
         ${wildcard $(SRC)/iec/*.c}
         C_SOURCES += $(IEC_SRC)
 
-#AGENT_DEMO_SRC = \
-#        ${wildcard $(TOP_DIR)/agent_tiny/examples/mqtt_demo/*.c}
-#        C_SOURCES += $(AGENT_DEMO_SRC)
-
-#CJSON_SRC = \
-#        ${wildcard $(TOP_DIR)/cJSON/cJSON*.c}
-#        C_SOURCES += $(CJSON_SRC)
-
-#USER_SRC =  \
-#        $(TOP_DIR)/main.c
-#        C_SOURCES += $(USER_SRC)
-
 
 # ASM sources
 

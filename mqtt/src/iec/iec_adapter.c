@@ -69,7 +69,6 @@ static uint64_t osKernelGetTickCount (void)
 
 iec_time_t iec_gettime_ms(void)
 {
-
     struct timeval tv;
     gettimeofday(&tv,NULL);
 

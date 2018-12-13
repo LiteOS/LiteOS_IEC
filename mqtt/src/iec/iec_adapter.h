@@ -32,8 +32,7 @@
  * applicable export control laws and regulations.
  *---------------------------------------------------------------------------*/
 
-/**@defgroup iec_adapter Agenttiny Adapter
- * @ingroup agent
+/**@defgroup iec_adapter IEC Adapter
  */
 
 #ifndef __IEC_ADAPTER_H__

@@ -4,15 +4,15 @@
 
 1.在https://console.huaweicloud.com/ief2.0 页面下载创建的直连设备的证书：包括ca.ct，private_cert.crt和private_cert.key。
 
-2.在include/atiny_config.h分别配置MQTT_TEST_CA_CRT，MQTT_TEST_CLI_CRT和MQTT_TEST_CLI_KEY。
+2.在include/iec_config.h分别配置MQTT_TEST_CA_CRT，MQTT_TEST_CLI_CRT和MQTT_TEST_CLI_KEY。
 
-3.在include/atiny_config.h中配置AGENT_TINY_PROJECT_ID和AGENT_TINY_DEVICE_ID。这两项配置可以查看private_cert.crt中：
+3.在include/iec_config.h中配置IEC_PROJECT_ID和IEC_DEVICE_ID。这两项配置可以查看private_cert.crt中：
 
 ![](./produceid.png)
 
-其中：“.”之前的字串为AGENT_TINY_PROJECT_ID，"."之后的字串为AGENT_TINY_DEVICE_ID。
+其中：“.”之前的字串为IEC_PROJECT_ID，"."之后的字串为IEC_DEVICE_ID。
 
-4.make之后执行build/Atiny.elf。
+4.make之后执行build/IEC.elf。
 
 ## 注：
 

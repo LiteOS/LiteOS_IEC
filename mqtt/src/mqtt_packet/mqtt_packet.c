@@ -132,8 +132,8 @@ int mqtt_encode_connect(unsigned char *buf, int buf_len, mqtt_connect_opt_t *opt
     // add payload size
     remaining_len += (int)strlen(options->connect_payload.client_id) + MQTT_STRING_LEN;
     if(options->connect_head.mqtt_connect_flag_u.bits.will_flag
-		&& options->connect_payload.will_topic
-		&& options->connect_payload.will_msg)
+        && options->connect_payload.will_topic
+        && options->connect_payload.will_msg)
     {
         remaining_len += (int)strlen(options->connect_payload.will_topic) + MQTT_STRING_LEN;
         remaining_len += (int)strlen(options->connect_payload.will_msg) + MQTT_STRING_LEN;
@@ -150,9 +150,9 @@ int mqtt_encode_connect(unsigned char *buf, int buf_len, mqtt_connect_opt_t *opt
     if((len + remaining_len) > buf_len)
         return -1;
 
-	/* check variable header and payload */
-	// TODO
-	/* Encode variable header */
+    /* check variable header and payload */
+    // TODO
+    /* Encode variable header */
     vhead_buf = buf + len;
     memcpy(vhead_buf, &(options->connect_head), sizeof(options->connect_head));
 
@@ -162,8 +162,8 @@ int mqtt_encode_connect(unsigned char *buf, int buf_len, mqtt_connect_opt_t *opt
     payload_buf += mqtt_encode_string(payload_buf, options->connect_payload.client_id);
 
     if(options->connect_head.mqtt_connect_flag_u.bits.will_flag
-		&& options->connect_payload.will_topic
-		&& options->connect_payload.will_msg)
+        && options->connect_payload.will_topic
+        && options->connect_payload.will_msg)
     {
         payload_buf += mqtt_encode_string(payload_buf, options->connect_payload.will_topic);
         payload_buf += mqtt_encode_string(payload_buf, options->connect_payload.will_msg);
@@ -197,7 +197,7 @@ int mqtt_encode_publish(unsigned char *buf, int buf_len, mqtt_publish_opt_t *opt
     len = mqtt_encode_fixhead(buf, MQTT_PACKET_TYPE_PUBLISH, options->dup, 
                               options->qos, options->retain, remaining_len);
 
-	/* Encode variable header */
+    /* Encode variable header */
     vhead_buf = buf + len;
     vhead_buf += mqtt_encode_string(vhead_buf, options->publish_head.topic);
     if(options->qos > 0)
@@ -323,7 +323,7 @@ int mqtt_encode_unsubscribe(unsigned char *buf, int buf_len, mqtt_unsubscribe_op
 
     /* Encode fix header */
     len = mqtt_encode_fixhead(buf, MQTT_PACKET_TYPE_UNSUBSCRIBE, 0, 0, 0, remaining_len);
-	/* Encode variable header */
+    /* Encode variable header */
     vhead_buf = buf + len;
     vhead_buf += mqtt_encode_num(vhead_buf, options->unsubscribe_head.packet_id);
 

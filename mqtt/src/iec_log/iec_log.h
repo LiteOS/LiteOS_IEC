@@ -35,7 +35,7 @@
 #ifndef __IEC_LOG_H__
 #define __IEC_LOG_H__
 #include <stdio.h>
-#include "iec_adapter.h"
+#include <assert.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,7 +54,7 @@ typedef enum
 } iec_log_e;
 
 /**
- *@ingroup agenttiny
+ *@ingroup iec
  *@brief set log level.
  *
  *@par Description:
@@ -71,7 +71,7 @@ typedef enum
 void iec_set_log_level(iec_log_e level);
 
 /**
- *@ingroup agenttiny
+ *@ingroup iec
  *@brief get log level.
  *
  *@par Description:
@@ -94,13 +94,30 @@ const char* iec_get_log_level_name(iec_log_e log_level);
     { \
         if ((level) >= iec_get_log_level()) \
         { \
-            (void)printf("[%s][%u][%s:%d] " fmt "\r\n", \
-            iec_get_log_level_name((level)), (unsigned int)iec_gettime_ms(), __FUNCTION__, __LINE__, ##__VA_ARGS__); \
+            (void)printf("[%s] [%s:%d] " fmt "\r\n", \
+            iec_get_log_level_name((level)), __FUNCTION__, __LINE__, ##__VA_ARGS__); \
         } \
     } while (0)
 #else
 #define IEC_LOG(level, fmt, ...)
 #endif
+
+
+#define IEC_ASSERT_MSG_PARAM_NULL  "null param"
+#define IEC_ASSERT_MSG_MALLOC_ERR  "malloc error"
+
+#ifdef ASSERT_DEBUG
+#define IEC_ASSERT(exp, msg)                                         \
+    do                                                             \
+    {    \
+        if(!exp)                                                          \
+            printf("[%s]:[%d]---[%s]\n", __FILE__, __LINE__, msg);    \
+    } while(0);                                                    \
+    assert(exp);
+#else
+#define IEC_ASSERT(exp, msg)
+#endif
+
 
 #ifdef __cplusplus
 }
