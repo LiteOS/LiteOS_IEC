@@ -77,7 +77,7 @@ static iec_mqtt_builtin_topic_t ief_builtin_topic[IEC_MQTT_BUILTIN_NUM] =
 
 void ev_handler(iec_connection_t *nc, int event, void *event_data)
 {
-    IEC_LOG(LOG_DEBUG, "ev_handler in main");
+    IEC_LOG(LOG_DEBUG, "ev_handler in main %d", event);
     iec_mqtt_msg_t *amm = (iec_mqtt_msg_t *)event_data;
     switch(event)
     {
@@ -99,12 +99,22 @@ void ev_handler(iec_connection_t *nc, int event, void *event_data)
                 iec_mqtt_connect(nc, &options);
             }
             break;
+        case IEC_EC_RECONN:
+            {
+                IEC_LOG(LOG_DEBUG, "do socket re-connect@@@");
+                #ifdef WITH_DTLS
+                if(iec_ssl_reinit(nc)) break;
+                #endif
+                nc->mgr->interface->ifuncs->discon(nc);
+                nc->mgr->interface->ifuncs->connect(nc);
+            }
+            break;
         case IEC_EV_MQTT_CONNACK:
             {
                 IEC_LOG(LOG_DEBUG, "mqtt connect succuss");
                 mqtt_subscribe_opt_t sub_options;
                 sub_options.subscribe_payload.count = IEC_MQTT_BUILTIN_NUM;
-                sub_options.subscribe_payload.topic = (char **)malloc(IEC_MQTT_BUILTIN_NUM);
+                sub_options.subscribe_payload.topic = (char **)iec_malloc(IEC_MQTT_BUILTIN_NUM * sizeof(char **));
                 sub_options.subscribe_payload.topic[0] = ief_builtin_topic[0].topic;
                 sub_options.subscribe_payload.topic[1] = ief_builtin_topic[1].topic;
                 sub_options.subscribe_payload.topic[2] = ief_builtin_topic[2].topic;
@@ -142,7 +152,7 @@ void ev_handler(iec_connection_t *nc, int event, void *event_data)
 
                 mqtt_unsubscribe_opt_t unsub_options;
                 unsub_options.unsubscribe_payload.count = 1;
-                unsub_options.unsubscribe_payload.topic = (char **)malloc(1);
+                unsub_options.unsubscribe_payload.topic = (char **)iec_malloc(sizeof(char **));
                 unsub_options.unsubscribe_payload.topic[0] = IEC_PROJECT_ID"/device/"IEC_DEVICE_ID"/properties/result";
                 iec_mqtt_unsubscribe(nc, &unsub_options);
             }

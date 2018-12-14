@@ -30,11 +30,12 @@
 #define IEC_FG_RECONNECT  (1 << 5)
 
 
-#define IEC_EV_POLL       1
-#define IEC_EV_CONNECTED  2
-#define IEC_EV_SEND       3
-#define IEC_EV_RECV       4
-#define IEC_EV_CLOSE      5
+#define IEC_EV_POLL       (1)
+#define IEC_EV_CONNECTED  (2)
+#define IEC_EV_SEND       (3)
+#define IEC_EV_RECV       (4)
+#define IEC_EV_CLOSE      (5)
+#define IEC_EC_RECONN     (6)
 
 typedef unsigned long int iec_time_t;
 

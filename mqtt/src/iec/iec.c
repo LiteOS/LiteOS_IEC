@@ -79,6 +79,7 @@ iec_connection_t* iec_connect(iec_manager_t *m, iec_event_handler cb, iec_connec
     {
         iec_buf_free(&(nc->send_buf));
         iec_buf_free(&(nc->recv_buf));
+        iec_ssl_destroy(nc);
         iec_free(nc);
         return NULL;
     }

@@ -14,7 +14,7 @@ static void *iec_calloc(size_t n, size_t size)
     return p;
 }
 
-static void my_debug( void *ctx, int level,
+static void iec_mbedtls_debug( void *ctx, int level,
                       const char *file, int line,
                       const char *str )
 {
@@ -59,8 +59,10 @@ int iec_ssl_init(iec_connection_t *nc, iec_ssl_param_u *ssl_param)
     mbedtls_ssl_init(ssl_ctx->ssl);
     mbedtls_ssl_config_init(ssl_ctx->conf);
     mbedtls_x509_crt_init(ssl_ctx->cacert);
+    mbedtls_x509_crt_init(ssl_ctx->clicert);
     mbedtls_ctr_drbg_init(ssl_ctx->ctr_drbg);
     mbedtls_entropy_init(ssl_ctx->entropy);
+	mbedtls_pk_init(ssl_ctx->pkey);
 
     if( ( ret = mbedtls_ctr_drbg_seed(ssl_ctx->ctr_drbg, mbedtls_entropy_func, ssl_ctx->entropy,
                                       (const unsigned char *) pers,
@@ -81,7 +83,7 @@ int iec_ssl_init(iec_connection_t *nc, iec_ssl_param_u *ssl_param)
         goto exit;
     }
 
-    IEC_LOG(LOG_DEBUG, "	. Loading the client cert. and key ...");
+    IEC_LOG(LOG_DEBUG, "  . Loading the client cert. and key ...");
     ret = mbedtls_x509_crt_parse(ssl_ctx->clicert, ssl_param->ca.client_cert, ssl_param->ca.client_cert_len);
     if( ret < 0 )
     {
@@ -99,6 +101,7 @@ int iec_ssl_init(iec_connection_t *nc, iec_ssl_param_u *ssl_param)
                   -ret );
         goto exit;
     }
+
     /*
      * 2. Setup stuff
      */
@@ -115,7 +118,7 @@ int iec_ssl_init(iec_connection_t *nc, iec_ssl_param_u *ssl_param)
     mbedtls_ssl_conf_authmode(ssl_ctx->conf, MBEDTLS_SSL_VERIFY_REQUIRED);
     mbedtls_ssl_conf_ca_chain(ssl_ctx->conf, ssl_ctx->cacert, NULL);
     mbedtls_ssl_conf_rng(ssl_ctx->conf, mbedtls_ctr_drbg_random, ssl_ctx->ctr_drbg);
-    mbedtls_ssl_conf_dbg(ssl_ctx->conf, my_debug, stdout);
+    mbedtls_ssl_conf_dbg(ssl_ctx->conf, iec_mbedtls_debug, stdout);
 
     if( ( ret = mbedtls_ssl_conf_own_cert( ssl_ctx->conf, ssl_ctx->clicert, ssl_ctx->pkey ) ) != 0 )
     {
@@ -273,20 +276,38 @@ exit:
     return ret;
 }
 
+int iec_ssl_reinit(iec_connection_t *nc)
+{
+    iec_ssl_destroy(nc);
+    iec_ssl_param_u ssl_param;
+
+    ssl_param.ca.server_name = server_name;
+    ssl_param.ca.ca_cert = mqtt_test_cas_pem;
+    ssl_param.ca.ca_cert_len = mqtt_test_cas_pem_len;
+    ssl_param.ca.client_cert = mqtt_test_cli_pem;
+    ssl_param.ca.client_cert_len = mqtt_test_cli_pem_len;
+    ssl_param.ca.client_key = mqtt_test_cli_key;
+    ssl_param.ca.client_key_len = mqtt_test_cli_key_len;
+
+    return iec_ssl_init(nc, &ssl_param);
+}
+
 void iec_ssl_destroy(iec_connection_t *nc)
 {
     iec_ssl_ctx_t *ssl_ctx = (iec_ssl_ctx_t *)nc->ssl_handler;
 
     mbedtls_ssl_context          *ssl = NULL;
-
     mbedtls_ssl_config           *conf = NULL;
     mbedtls_ctr_drbg_context     *ctr_drbg = NULL;
     mbedtls_entropy_context      *entropy = NULL;
     mbedtls_timing_delay_context *timer = NULL;
+    mbedtls_x509_crt             *cacert = NULL;
+    mbedtls_pk_context           *pkey = NULL;
 
     ssl        = ssl_ctx->ssl;
     conf       = ssl_ctx->conf;
     timer      = (mbedtls_timing_delay_context *)ssl_ctx->timer;
+    pkey = ssl_ctx->pkey;
 
     if (conf)
     {
@@ -298,6 +319,9 @@ void iec_ssl_destroy(iec_connection_t *nc)
         }
     }
 
+#if defined(MBEDTLS_X509_CRT_PARSE_C)
+    cacert = (mbedtls_x509_crt *)conf->ca_chain;
+#endif
 
     if (conf)
     {
@@ -323,7 +347,22 @@ void iec_ssl_destroy(iec_connection_t *nc)
         mbedtls_free(timer);
     }
 
+#if defined(MBEDTLS_X509_CRT_PARSE_C)
+    if (cacert)
+    {
+        mbedtls_x509_crt_free(cacert);
+        mbedtls_free(cacert);
+    }
+#endif
+
+    if(pkey)
+    {
+        mbedtls_pk_free(pkey);
+        mbedtls_free(pkey);
+    }
+
     mbedtls_ssl_free(ssl);
-    mbedtls_free(ssl);
+    mbedtls_free(ssl);
+    mbedtls_free(ssl_ctx);
 }
 

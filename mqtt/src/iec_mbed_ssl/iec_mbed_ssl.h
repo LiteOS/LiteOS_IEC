@@ -11,7 +11,7 @@
 #include "mbedtls/error.h"
 
 #include "iec.h"
-
+#include "iec_config.h"
 
 
 typedef struct iec_ssl_ctx
@@ -32,6 +32,7 @@ int iec_ssl_recv( void *ctx, unsigned char *buf, size_t len);
 int iec_ssl_init(iec_connection_t *nc, iec_ssl_param_u *ssl_param);
 int iec_ssl_handshake(iec_connection_t *nc);
 void iec_ssl_destroy(iec_connection_t *nc);
+int iec_ssl_reinit(iec_connection_t *nc);
 
 
 #endif

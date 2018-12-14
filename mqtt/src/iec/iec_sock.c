@@ -132,7 +132,8 @@ void iec_nc_can_read_cb(iec_connection_t *nc)
     IEC_LOG(LOG_DEBUG, "iec_nc_can_read_cb len:%d", (int)len);
 
 #if WITH_DTLS
-    if(len > 0)  rc = mbedtls_ssl_read(((iec_ssl_ctx_t *)nc->ssl_handler)->ssl, (unsigned char *) buf, len);
+    if(len > 0)
+        rc = mbedtls_ssl_read(((iec_ssl_ctx_t *)nc->ssl_handler)->ssl, (unsigned char *) buf, len);
 
     if (rc == MBEDTLS_ERR_SSL_WANT_READ)
     {
@@ -151,7 +152,7 @@ void iec_nc_can_read_cb(iec_connection_t *nc)
         rc = nc->mgr->interface->ifuncs->recv(nc, buf, len);
 #endif
 
-    if(rc< 0)
+    if(rc <= 0)
     {
         IEC_LOG(LOG_ERR, "read error");
         nc->flags |= IEC_FG_RECONNECT;
@@ -164,15 +165,25 @@ void iec_nc_can_read_cb(iec_connection_t *nc)
     }
 }
 
-static void iec_nc_poll_cb(iec_connection_t *nc)
+static int iec_nc_poll_cb(iec_connection_t *nc)
 {
     unsigned long int now = iec_gettime_ms();
+
+    if(nc->flags & IEC_FG_RECONNECT)
+    {
+        IEC_LOG(LOG_INFO, "reconnect ~~~~~~");
+        nc->flags &= ~IEC_FG_CONNECTING;
+        iec_dispatch_event(nc, NULL, NULL, IEC_EC_RECONN, &now);
+        return 1;
+    }
     iec_dispatch_event(nc, NULL, NULL, IEC_EV_POLL, &now);
+    return 0;
 }
 
 static void iec_mgr_handle_conn(iec_connection_t *nc)
 {
-    iec_nc_poll_cb(nc);
+    if(iec_nc_poll_cb(nc))
+        return;
 
     if(nc->flags & IEC_FG_CONNECTING)
     {
@@ -199,7 +210,7 @@ void iec_sock_init(iec_if_t *interface)
 
 void iec_sock_uninit(iec_if_t *interface)
 {
-
+    (void)interface;
 }
 
 void iec_sock_connect(iec_connection_t *nc)
@@ -207,14 +218,22 @@ void iec_sock_connect(iec_connection_t *nc)
     int rc = 0;
 
     nc->sock_fd = socket(AF_INET, SOCK_STREAM, 0);
-    if (nc->sock_fd == -1) {
+    if (nc->sock_fd == -1)
+    {
         IEC_LOG(LOG_ERR, "socket error");
+        nc->flags |= IEC_FG_RECONNECT;
         return;
     }
 
     rc = connect(nc->sock_fd, (struct sockaddr *)&nc->address, sizeof(nc->address));
     if(rc < 0)
+    {
         IEC_LOG(LOG_ERR, "sock %d rc %d ",  nc->sock_fd, rc);
+        nc->flags |= IEC_FG_RECONNECT;
+        return;
+    }
+	nc->flags &= ~IEC_FG_RECONNECT;
+	nc->flags |= IEC_FG_CONNECTING;
 }
 
 void iec_sock_discon(iec_connection_t *nc)
@@ -243,7 +262,8 @@ iec_time_t iec_sock_poll(iec_if_t *interface, int timeout_ms)
     FD_ZERO(&wfds);
     FD_ZERO(&efds);
 
-    FD_SET(m->nc->sock_fd, &rfds);
+    if(!(m->nc->flags & IEC_FG_RECONNECT))
+        FD_SET(m->nc->sock_fd, &rfds);
     if(m->nc->send_buf.len > 0)
     {
         FD_SET(m->nc->sock_fd, &wfds);

@@ -154,7 +154,10 @@ int mqtt_encode_connect(unsigned char *buf, int buf_len, mqtt_connect_opt_t *opt
     // TODO
     /* Encode variable header */
     vhead_buf = buf + len;
-    memcpy(vhead_buf, &(options->connect_head), sizeof(options->connect_head));
+    //#define SWAP16(x) ((x & 0xFF00) >> 8) | ((x & 0x00FF) << 8)
+    //options->connect_head.keep_alive = SWAP16(options->connect_head.keep_alive);
+    memcpy(vhead_buf, &(options->connect_head), sizeof(options->connect_head) - sizeof(options->connect_head.keep_alive));
+    mqtt_encode_num(vhead_buf + sizeof(options->connect_head) - sizeof(options->connect_head.keep_alive), options->connect_head.keep_alive);
 
     /* Encode payload*/
     payload_buf = vhead_buf + sizeof(options->connect_head);
