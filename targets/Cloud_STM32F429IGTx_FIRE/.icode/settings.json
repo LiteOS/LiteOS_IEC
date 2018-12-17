@@ -1,0 +1,66 @@
+{
+    "output": {
+        "name": "Huawei_LiteOS",
+        "path": ".\\build"
+    },
+    "target": {
+        "productNumber": "STM32F429IG"
+    },
+    "debugger": {
+        "type": "JLink",
+        "jlink": {
+            "interface": "SWD",
+            "speed": "8000",
+            "path": "C:\\Program Files (x86)\\SEGGER\\JLink_V634h",
+            "port": "USB"
+        },
+        "initType": "reset",
+        "initFile": ".icode\\default.gdbinit",
+        "compileOS": "Windows",
+        "compilePath": null
+    },
+    "burner": {
+        "type": "JLink",
+        "speed": "8000",
+        "loadAddress": "0x08000000",
+        "path": "C:\\Program Files (x86)\\SEGGER\\JLink_V634h",
+        "interface": "JTAG",
+        "erase": true,
+        "check": true,
+        "flashAddress": null,
+        "romsize": null
+    },
+    "compiler": {
+        "make": {
+            "path": "C:\\MinGW\\msys\\1.0\\bin",
+            "script": "GCC\\Makefile",
+            "args": null
+        },
+        "path": "C:\\Program Files (x86)\\GNU Tools Arm Embedded\\7 2018-q2-update\\bin",
+        "type": "GCC",
+        "gcc": {
+            "path": null,
+            "optimze": null,
+            "define": null,
+            "include": null,
+            "args": null
+        },
+        "asm": {
+            "path": null,
+            "define": null,
+            "include": null,
+            "args": null
+        },
+        "linker": {
+            "path": null,
+            "robase": null,
+            "rwbase": null,
+            "script": null,
+            "args": null
+        }
+    },
+    "general": {
+        "projectName": "Cloud_STM32F429IGTx_FIRE"
+    },
+    "version": "0.2.2"
+}
