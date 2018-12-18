@@ -1,0 +1,6 @@
+%clang
+%c -std=c99
+%cpp -std=c++98
+-pthread
+-I C:\Program Files (x86)\GNU Tools Arm Embedded\7 2018-q2-update\bin\arm-none-eabi\include
+-g3
