@@ -88,7 +88,7 @@ typedef struct iec_if_funcs
 {
     void (*if_init)(iec_if_t *interface);
     void (*if_uninit)(iec_if_t *interface);
-    void (*if_connect)(iec_connection_t *nc);
+    int (*if_connect)(iec_connection_t *nc);
     void (*if_discon)(iec_connection_t *nc);
     iec_time_t (*if_poll)(iec_if_t *interface, int timeout_ms);
     int (*if_send)(iec_connection_t *nc, const void *buf, size_t len);

@@ -104,7 +104,7 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef *ethHandle)
     __HAL_RCC_GPIOG_CLK_ENABLE();
     __HAL_RCC_GPIOI_CLK_ENABLE();
 
-
+#if 1
     if (ethHandle->Instance == ETH)
     {
         /* USER CODE BEGIN ETH_MspInit 0 */
@@ -168,6 +168,72 @@ void HAL_ETH_MspInit(ETH_HandleTypeDef *ethHandle)
 
         /* USER CODE END ETH_MspInit 1 */
     }
+#else
+
+    if (ethHandle->Instance == ETH)
+    {
+        /* USER CODE BEGIN ETH_MspInit 0 */
+
+        /* USER CODE END ETH_MspInit 0 */
+        /* Enable Peripheral clock */
+        __HAL_RCC_ETH_CLK_ENABLE();
+
+        /**ETH GPIO Configuration
+             PC1     ------> ETH_MDC  yes
+             PA1     ------> ETH_REF_CLK  yes
+             PA2     ------> ETH_MDIO  yes
+             PA7     ------> ETH_CRS_DV  yes
+             PC4     ------> ETH_RXD0  yes
+             PC5     ------> ETH_RXD1  yes
+             PB11     ------> ETH_TX_EN  PG11
+             PG13     ------> ETH_TXD0  yes
+             PG14     ------> ETH_TXD1  yes
+             PI1      ------> ETH_NRST  PH15
+             */
+
+        GPIO_InitStruct.Pin = GPIO_PIN_15;
+        GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+        HAL_GPIO_Init(GPIOH, &GPIO_InitStruct);
+
+        HAL_GPIO_WritePin(GPIOH, GPIO_PIN_15, GPIO_PIN_RESET);
+        HAL_Delay(1000);
+        HAL_GPIO_WritePin(GPIOH, GPIO_PIN_15, GPIO_PIN_SET);
+        HAL_Delay(1000);
+
+        GPIO_InitStruct.Pin = GPIO_PIN_1 | GPIO_PIN_4 | GPIO_PIN_5;
+        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
+        HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+        GPIO_InitStruct.Pin = GPIO_PIN_1 | GPIO_PIN_2 | GPIO_PIN_7;
+        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
+        HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+        GPIO_InitStruct.Pin = GPIO_PIN_11;
+        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
+        HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+
+        GPIO_InitStruct.Pin = GPIO_PIN_13 | GPIO_PIN_14;
+        GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+        GPIO_InitStruct.Pull = GPIO_NOPULL;
+        GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+        GPIO_InitStruct.Alternate = GPIO_AF11_ETH;
+        HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+        /* USER CODE BEGIN ETH_MspInit 1 */
+
+        /* USER CODE END ETH_MspInit 1 */
+    }
+#endif
 }
 
 void HAL_ETH_MspDeInit(ETH_HandleTypeDef *ethHandle)

@@ -1,5 +1,8 @@
+#ifndef WITH_LWIP
 #include <pthread.h>
+
 #include <unistd.h>
+#endif
 #include <string.h>
 
 #include "iec_log.h"
@@ -102,11 +105,11 @@ void ev_handler(iec_connection_t *nc, int event, void *event_data)
         case IEC_EC_RECONN:
             {
                 IEC_LOG(LOG_DEBUG, "do socket re-connect@@@");
-                #ifdef WITH_DTLS
-                if(iec_ssl_reinit(nc)) break;
-                #endif
                 nc->mgr->interface->ifuncs->if_discon(nc);
-                nc->mgr->interface->ifuncs->if_connect(nc);
+                if(nc->mgr->interface->ifuncs->if_connect(nc)) break;
+#ifdef WITH_DTLS
+                if(iec_ssl_reinit(nc)) break;
+#endif
             }
             break;
         case IEC_EV_MQTT_CONNACK:

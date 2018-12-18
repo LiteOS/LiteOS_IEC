@@ -213,7 +213,7 @@ void iec_sock_uninit(iec_if_t *interface)
     (void)interface;
 }
 
-void iec_sock_connect(iec_connection_t *nc)
+int iec_sock_connect(iec_connection_t *nc)
 {
     int rc = 0;
 
@@ -230,10 +230,12 @@ void iec_sock_connect(iec_connection_t *nc)
     {
         IEC_LOG(LOG_ERR, "sock %d rc %d ",  nc->sock_fd, rc);
         nc->flags |= IEC_FG_RECONNECT;
-        return;
+        return rc;
     }
-	nc->flags &= ~IEC_FG_RECONNECT;
-	nc->flags |= IEC_FG_CONNECTING;
+    nc->flags &= ~IEC_FG_RECONNECT;
+    nc->flags |= IEC_FG_CONNECTING;
+
+    return rc;
 }
 
 void iec_sock_discon(iec_connection_t *nc)

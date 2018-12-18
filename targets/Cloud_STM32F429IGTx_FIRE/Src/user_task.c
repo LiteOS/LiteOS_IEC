@@ -35,9 +35,6 @@
 #include "sys_init.h"
 #ifdef WITH_MQTT
 #include "flash_adaptor.h"
-#include "agenttiny_mqtt/agent_tiny_demo.h"
-#else
-//#include "agenttiny_lwm2m/agent_tiny_demo.h"
 #endif
 
 
