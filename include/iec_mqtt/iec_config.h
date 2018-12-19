@@ -11,6 +11,10 @@
 
 #define SERVER_IP "122.112.225.88" //"118.190.136.167";//;//"127.0.0.1";
 
+#define IEC_CLIEND_ID           "LiteOS_IEC"
+#define IEC_USER_NAME           ""
+#define IEC_PASS_WORD           ""
+
 #define IEC_MQTT_BUILTIN_NUM (5)
 
 

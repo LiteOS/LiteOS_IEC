@@ -104,7 +104,7 @@ void iec_nc_can_write_cb(iec_connection_t *nc)
     }
 #else
     if(len > 0)
-        rc = nc->mgr->interface->ifuncs->send(nc, buf, len);
+        rc = nc->mgr->interface->ifuncs->if_send(nc, buf, len);
 #endif
 
     if(rc < 0)
@@ -149,7 +149,7 @@ void iec_nc_can_read_cb(iec_connection_t *nc)
     }
 #else
     if(len > 0)
-        rc = nc->mgr->interface->ifuncs->recv(nc, buf, len);
+        rc = nc->mgr->interface->ifuncs->if_recv(nc, buf, len);
 #endif
 
     if(rc <= 0)
