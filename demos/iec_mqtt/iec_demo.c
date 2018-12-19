@@ -1,6 +1,5 @@
 #ifndef WITH_LWIP
 #include <pthread.h>
-
 #include <unistd.h>
 #endif
 #include <string.h>
@@ -11,6 +10,10 @@
 #include "iec_mqtt.h"
 #include "iec_config.h"
 #include "mqtt_packet.h"
+
+#ifdef WITH_DTLS
+#include "iec_mbed_ssl.h"
+#endif
 
 
 static iec_device_info_t default_dev_info;
@@ -93,11 +96,11 @@ void ev_handler(iec_connection_t *nc, int event, void *event_data)
                 memset(&options, 0, sizeof(options));
                 options.connect_head = (mqtt_connect_head_t)MQTT_CONNECT_HEAD_INIT;
                 options.connect_head.keep_alive = 60;
-                options.connect_payload.client_id = "LiteIOT";
+                options.connect_payload.client_id = IEC_CLIEND_ID;
                 options.connect_head.mqtt_connect_flag_u.bits.user_name_flag = 1;
                 options.connect_head.mqtt_connect_flag_u.bits.psd_flag = 1;
-                options.connect_payload.user_name = "LiteIOT";
-                options.connect_payload.password = "123456";
+                options.connect_payload.user_name = IEC_USER_NAME;
+                options.connect_payload.password = IEC_PASS_WORD;
                 nc->proto_data = (void *)iec_malloc((size_t)sizeof(iec_mqtt_proto_data_t));
                 iec_mqtt_connect(nc, &options);
             }
